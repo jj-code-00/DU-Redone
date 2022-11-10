@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://Animations/Player/idle_right.tres" type="Animation" id=1]
 [ext_resource path="res://Animations/Player/walk_right.tres" type="Animation" id=2]
@@ -10,6 +10,8 @@
 [ext_resource path="res://Animations/Player/idle_down.tres" type="Animation" id=8]
 [ext_resource path="res://Scenes/Player.gd" type="Script" id=9]
 [ext_resource path="res://Assets/DU-assets/Player Icons/Hades.png" type="Texture" id=10]
+[ext_resource path="res://Animations/Player/attack_left.tres" type="Animation" id=11]
+[ext_resource path="res://Animations/Player/attack_right.tres" type="Animation" id=12]
 
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 9.0
@@ -28,6 +30,30 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ 6 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Area2D/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -15, 3 ) ]
 }
 
 [sub_resource type="AnimationNodeAnimation" id=5]
@@ -82,7 +108,7 @@ blend_mode = 1
 
 [sub_resource type="AnimationNodeStateMachine" id=10]
 states/Idle/node = SubResource( 9 )
-states/Idle/position = Vector2( 560, 150 )
+states/Idle/position = Vector2( 558, 150 )
 states/Walk/node = SubResource( 16 )
 states/Walk/position = Vector2( 819, 157 )
 transitions = [ "Idle", "Walk", SubResource( 17 ), "Walk", "Idle", SubResource( 18 ) ]
@@ -90,13 +116,14 @@ start_node = "Idle"
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=11]
 
+[sub_resource type="RectangleShape2D" id=19]
+extents = Vector2( 5, 13 )
+
 [node name="Player" type="KinematicBody2D"]
-position = Vector2( 219, 174 )
-collision_mask = 3
+z_index = 1
+collision_layer = 16
+collision_mask = 31
 script = ExtResource( 9 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 10 )
@@ -112,6 +139,8 @@ current = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 4 )
+anims/attack_left = ExtResource( 11 )
+anims/attack_right = ExtResource( 12 )
 anims/idle_down = ExtResource( 8 )
 anims/idle_left = ExtResource( 7 )
 anims/idle_right = ExtResource( 1 )
@@ -128,3 +157,14 @@ active = true
 parameters/playback = SubResource( 11 )
 parameters/Idle/blend_position = Vector2( 0, 0 )
 parameters/Walk/blend_position = Vector2( 0, 0 )
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( -15, 3 )
+shape = SubResource( 19 )
+disabled = true
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
