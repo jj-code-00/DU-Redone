@@ -92,6 +92,7 @@ start_node = "Idle"
 
 [node name="Player" type="KinematicBody2D"]
 position = Vector2( 219, 174 )
+collision_mask = 3
 script = ExtResource( 9 )
 __meta__ = {
 "_edit_group_": true

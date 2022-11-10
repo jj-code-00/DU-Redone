@@ -5,6 +5,7 @@ onready var animation_player = $AnimationPlayer
 onready var animation_tree = $AnimationTree
 onready var animation_state = animation_tree.get("parameters/playback")
 var movement = Vector2.ZERO
+var is_flying = false
 
 func _physics_process(delta):
 	if movement != Vector2.ZERO:
@@ -32,3 +33,6 @@ func _physics_process(delta):
 		move_and_slide(movement)
 	if(!(Input.is_action_pressed("i_up") || Input.is_action_pressed("i_down") || Input.is_action_pressed("i_left") || Input.is_action_pressed("i_right"))):
 		animation_state.travel("Idle")
+	if(Input.is_action_just_pressed("i_toggle_flight")):
+		is_flying = !is_flying
+		set_collision_mask_bit(1,is_flying)
