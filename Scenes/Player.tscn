@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://Animations/Player/idle_right.tres" type="Animation" id=1]
 [ext_resource path="res://Animations/Player/walk_right.tres" type="Animation" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://Assets/DU-assets/Player Icons/Hades.png" type="Texture" id=10]
 [ext_resource path="res://Animations/Player/attack_left.tres" type="Animation" id=11]
 [ext_resource path="res://Animations/Player/attack_right.tres" type="Animation" id=12]
+[ext_resource path="res://Animations/Player/attack_up.tres" type="Animation" id=13]
 
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 9.0
@@ -55,6 +56,95 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Vector2( -15, 3 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("Area2D/CollisionShape2D:shape:extents")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 9, 4.5 ) ]
+}
+
+[sub_resource type="Animation" id=20]
+resource_name = "attack_down"
+length = 0.2
+step = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 27 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Area2D/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Area2D/CollisionShape2D:shape:extents")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ Vector2( 9, 4.5 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( 0, 22 ), Vector2( 0, 3 ) ]
+}
+
+[sub_resource type="AnimationNodeAnimation" id=22]
+animation = "attack_left"
+
+[sub_resource type="AnimationNodeAnimation" id=23]
+animation = "attack_down"
+
+[sub_resource type="AnimationNodeAnimation" id=24]
+animation = "attack_right"
+
+[sub_resource type="AnimationNodeAnimation" id=25]
+animation = "attack_up"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id=21]
+blend_point_0/node = SubResource( 22 )
+blend_point_0/pos = Vector2( -1, 0 )
+blend_point_1/node = SubResource( 23 )
+blend_point_1/pos = Vector2( 0, 1 )
+blend_point_2/node = SubResource( 24 )
+blend_point_2/pos = Vector2( 1, 0 )
+blend_point_3/node = SubResource( 25 )
+blend_point_3/pos = Vector2( 0, -1 )
+snap = Vector2( 0.01, 0.01 )
+blend_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id=5]
 animation = "idle_left"
@@ -106,18 +196,31 @@ blend_mode = 1
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=18]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=26]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=27]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=28]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=29]
+switch_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id=10]
+states/Attacking/node = SubResource( 21 )
+states/Attacking/position = Vector2( 581, 270 )
 states/Idle/node = SubResource( 9 )
 states/Idle/position = Vector2( 558, 150 )
 states/Walk/node = SubResource( 16 )
 states/Walk/position = Vector2( 819, 157 )
-transitions = [ "Idle", "Walk", SubResource( 17 ), "Walk", "Idle", SubResource( 18 ) ]
+transitions = [ "Idle", "Walk", SubResource( 17 ), "Walk", "Idle", SubResource( 18 ), "Idle", "Attacking", SubResource( 26 ), "Attacking", "Idle", SubResource( 27 ), "Walk", "Attacking", SubResource( 28 ), "Attacking", "Walk", SubResource( 29 ) ]
 start_node = "Idle"
+graph_offset = Vector2( 73, 106 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=11]
 
 [sub_resource type="RectangleShape2D" id=19]
-extents = Vector2( 5, 13 )
+extents = Vector2( 9, 4.5 )
 
 [node name="Player" type="KinematicBody2D"]
 z_index = 1
@@ -139,8 +242,10 @@ current = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 4 )
+anims/attack_down = SubResource( 20 )
 anims/attack_left = ExtResource( 11 )
 anims/attack_right = ExtResource( 12 )
+anims/attack_up = ExtResource( 13 )
 anims/idle_down = ExtResource( 8 )
 anims/idle_left = ExtResource( 7 )
 anims/idle_right = ExtResource( 1 )
@@ -155,6 +260,7 @@ tree_root = SubResource( 10 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 11 )
+parameters/Attacking/blend_position = Vector2( 0.0348653, -0.715517 )
 parameters/Idle/blend_position = Vector2( 0, 0 )
 parameters/Walk/blend_position = Vector2( 0, 0 )
 

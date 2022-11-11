@@ -1,7 +1,7 @@
 [gd_resource type="Animation" format=2]
 
 [resource]
-resource_name = "attack_left"
+resource_name = "attack_up"
 length = 0.2
 step = 0.2
 tracks/0/type = "value"
@@ -14,7 +14,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ 25 ]
+"values": [ 18 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Area2D/CollisionShape2D:disabled")
@@ -29,26 +29,26 @@ tracks/1/keys = {
 "values": [ false, true ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/2/path = NodePath("Area2D/CollisionShape2D:shape:extents")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.2 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ Vector2( -15, 3 ), Vector2( 0, 3 ) ]
+"values": [ Vector2( 9, 4.5 ) ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("Area2D/CollisionShape2D:shape:extents")
+tracks/3/path = NodePath("Area2D/CollisionShape2D:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 5, 13 ) ]
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Vector2( 0, -16.5 ), Vector2( 0, 3 ) ]
 }
